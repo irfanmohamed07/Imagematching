@@ -1,30 +1,107 @@
-<%- include('partials/header') %>
-<div class="flex-container">
-    <div class="image-container">
-        <h2>Uploaded Image</h2>
-        <img src="<%= uploadedImage %>" alt="Uploaded Image" class="image">
-    </div>
-    
-    <div class="info-container">
-        <h3>Match Information</h3>
-        <p>Name: <%= personInfo.name %></p>
-        <p>RRN: <%= personInfo.rrn %></p>
-        <p>Department: <%= personInfo.department %></p>
-        <p>Year: <%= personInfo.year %></p>
-        <p>Section: <%= personInfo.section %></p>
-        <p>Match Result: <%= matchResult %></p>
-        <p>Match Score: <%= matchScore %></p>
-    </div>
+<%- include('partials/header', { title: 'Match Results — Crescent College' }) %>
 
-    <div class="image-container">
-        <h2>Matched Image</h2>
-        <% if (matchedImage) { %>
-            <img src="<%= matchedImage %>" alt="Matched Image" class="image">
-        <% } else { %>
-            <p>No matched image available.</p>
-        <% } %>
-    </div>
-</div>
+    <!-- Result Section -->
+    <section class="result-section">
+        <div class="result-container">
+            <div class="result-header">
+                <h1>Student Match Results</h1>
+                <p>Here's the student information we found</p>
+            </div>
 
-    
+            <div class="result-grid">
+                <!-- Uploaded Image Card -->
+                <div class="result-card">
+                    <h2><i class="fas fa-upload"></i> Uploaded Photo</h2>
+                    <img src="<%= uploadedImage %>" alt="Uploaded Image" class="image">
+                </div>
+
+                <!-- Match Information Card -->
+                <div class="result-card result-info">
+                    <h3><i class="fas fa-user"></i> Student Info</h3>
+
+                    <% if (error) { %>
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <%= error %>
+                        </div>
+                        <% } else { %>
+                            <div class="info-item">
+                                <span class="info-label">Name</span>
+                                <span class="info-value">
+                                    <%= personInfo.name %>
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">RRN</span>
+                                <span class="info-value">
+                                    <%= personInfo.rrn %>
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Department</span>
+                                <span class="info-value">
+                                    <%= personInfo.department %>
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Year</span>
+                                <span class="info-value">
+                                    <%= personInfo.year %>
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Section</span>
+                                <span class="info-value">
+                                    <%= personInfo.section %>
+                                </span>
+                            </div>
+
+                            <div class="match-score-display">
+                                <div class="match-score-label">Confidence</div>
+                                <div class="match-score-value">
+                                    <%= matchScore %>
+                                </div>
+                            </div>
+
+                            <% if (matches && matches.length> 1) { %>
+                                <div class="top-matches">
+                                    <h4>Other Possible Matches</h4>
+                                    <ul>
+                                        <% matches.slice(0, 3).forEach(match=> { %>
+                                            <li>
+                                                <strong>
+                                                    <%= match.name %>
+                                                </strong> — <%= (match.confidence * 100).toFixed(1) %>%
+                                            </li>
+                                            <% }); %>
+                                    </ul>
+                                </div>
+                                <% } %>
+                                    <% } %>
+                </div>
+
+                <!-- Matched Image Card -->
+                <div class="result-card">
+                    <h2><i class="fas fa-check-circle" style="color: #22c55e;"></i> Matched Photo</h2>
+                    <% if (matchedImage) { %>
+                        <img src="<%= matchedImage %>" alt="Matched Image" class="image">
+                        <% } else { %>
+                            <div style="padding: 2rem; text-align: center; color: #71717a;">
+                                <i class="fas fa-user-slash"
+                                    style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+                                <p>No match found</p>
+                            </div>
+                            <% } %>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="/" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Match Another Student
+                </a>
+            </div>
+        </div>
+    </section>
+
     <%- include('partials/footer') %>

@@ -2,68 +2,224 @@ import express from "express";
 import multer from "multer";
 import { exec } from "child_process";
 import path from "path";
+import { readFileSync } from "fs";
 
 const router = express.Router();
 
 // Configure Multer for file upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads"); // save uploads to /uploads folder
+    cb(null, "uploads");
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // unique filename
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
-const upload = multer({ storage: storage });
+
+// File filter for images only
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = /jpeg|jpg|png|webp|gif/;
+  const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = allowedTypes.test(file.mimetype);
+
+  if (extname && mimetype) {
+    return cb(null, true);
+  } else {
+    cb(new Error('Only image files are allowed'));
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: { fileSize: 10 * 1024 * 1024 }
+});
+
+// Store pending matches for async processing
+const pendingMatches = new Map();
 
 router.get("/", (req, res) => {
-    res.render("home");
+  res.render("home");
 });
-// POST route to handle file upload and image matching
+
+// POST route - Upload and show scanning animation
 router.post("/upload", upload.single("image"), (req, res) => {
-    if (!req.file) {
-      return res.status(400).send("No file uploaded.");
-    }
-  
-    const uploadedImagePath = path.join("uploads", req.file.filename);
-  
-    // Run the Python image matching script
-    exec(`python match.py "${uploadedImagePath}"`, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`exec error: ${error}`);
-        return res.status(500).send("Error running Python script");
-      }
-  
-      try {
-        const result = JSON.parse(stdout); // Parse the JSON output from the Python script
-  
-        // Prepare data to pass to EJS
-        const matchedImage = result["Best Matching Image"]
-          ? `/images/${result["Best Matching Image"]}`
-          : null; // If no match, matchedImage will be null
-  
-          res.render("result", {
-            title: "Image Match Result", // Define the title here
-            matchResult: result["Match Result"],
-            matchScore: result["Match Score"],
-            uploadedImage: `/uploads/${req.file.filename}`,
-            matchedImage: matchedImage,
-            personInfo: {
-              name: result["Name"] || "N/A",
-              rrn: result["RRN"] || "N/A",
-              department: result["Department"] || "N/A",
-              year: result["Year"] || "N/A",
-              section: result["Section"] || "N/A"
-            }
-          });
-          
-      } catch (e) {
-        console.error("Failed to parse JSON from Python script:", e);
-        res.status(500).send("Failed to parse JSON output");
-      }
-    });
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
+
+  const matchId = Date.now().toString();
+  const uploadedImagePath = path.join("uploads", req.file.filename);
+
+  // Store the match request
+  pendingMatches.set(matchId, {
+    status: "processing",
+    imagePath: uploadedImagePath,
+    filename: req.file.filename,
+    result: null
   });
-  
+
+  // Start ML processing in background
+  processMatch(matchId, uploadedImagePath, req.file.filename);
+
+  // Immediately show scanning animation
+  res.render("scanning", {
+    title: "Scanning - Crescent College",
+    matchId: matchId,
+    uploadedImage: `/uploads/${req.file.filename}`
+  });
+});
+
+// API endpoint to check match status
+router.get("/api/match-status/:matchId", (req, res) => {
+  const matchId = req.params.matchId;
+  const match = pendingMatches.get(matchId);
+
+  if (!match) {
+    return res.json({ status: "not_found" });
+  }
+
+  res.json({
+    status: match.status,
+    ready: match.status === "complete" || match.status === "error"
+  });
+});
+
+// Results page - called when processing is complete
+router.get("/results/:matchId", (req, res) => {
+  const matchId = req.params.matchId;
+  const match = pendingMatches.get(matchId);
+
+  if (!match) {
+    return res.redirect("/");
+  }
+
+  // Clean up
+  pendingMatches.delete(matchId);
+
+  if (match.status === "error") {
+    return res.render("result", {
+      title: "Error - Crescent College",
+      matchResult: "Error",
+      matchScore: "N/A",
+      uploadedImage: `/uploads/${match.filename}`,
+      matchedImage: null,
+      personInfo: {
+        name: "N/A",
+        rrn: "N/A",
+        department: "N/A",
+        year: "N/A",
+        section: "N/A"
+      },
+      error: match.error || "Processing failed",
+      matches: []
+    });
+  }
+
+  // Return the result
+  res.render("result", match.result);
+});
+
+// Background processing function
+function processMatch(matchId, uploadedImagePath, filename) {
+  exec(`venv\\Scripts\\python match.py "${uploadedImagePath}"`, {
+    maxBuffer: 1024 * 1024 * 10
+  }, (error, stdout, stderr) => {
+    if (stderr) {
+      console.log("Python ML Info:", stderr);
+    }
+
+    const match = pendingMatches.get(matchId);
+    if (!match) return;
+
+    if (error) {
+      console.error(`exec error: ${error}`);
+      match.status = "error";
+      match.error = "Error running ML matching";
+      return;
+    }
+
+    try {
+      const result = JSON.parse(stdout);
+
+      if (result.error) {
+        match.status = "complete";
+        match.result = {
+          title: "No Match - Crescent College",
+          matchResult: "No Match",
+          matchScore: "N/A",
+          uploadedImage: `/uploads/${filename}`,
+          matchedImage: null,
+          personInfo: {
+            name: "N/A",
+            rrn: "N/A",
+            department: "N/A",
+            year: "N/A",
+            section: "N/A"
+          },
+          error: result.error,
+          matches: [],
+          imageQuality: result.quality_score || null
+        };
+        return;
+      }
+
+      const bestMatch = result.matches && result.matches.length > 0
+        ? result.matches[0]
+        : null;
+
+      const matchedImage = bestMatch && bestMatch.filename
+        ? `/images/${bestMatch.filename}`
+        : null;
+
+      let bestMatchMetadata = {};
+      try {
+        const imageData = JSON.parse(readFileSync("image_data.json", "utf-8"));
+        bestMatchMetadata = bestMatch && bestMatch.filename
+          ? imageData[bestMatch.filename] || {}
+          : {};
+      } catch (e) {
+        console.error("Error reading image_data.json:", e);
+      }
+
+      const confidence = bestMatch ? bestMatch.confidence : 0;
+      let matchQuality = "No Match";
+      if (confidence >= 0.85) matchQuality = "Excellent Match";
+      else if (confidence >= 0.75) matchQuality = "Strong Match";
+      else if (confidence >= 0.65) matchQuality = "Good Match";
+      else if (confidence >= 0.55) matchQuality = "Possible Match";
+
+      match.status = "complete";
+      match.result = {
+        title: "Match Results - Crescent College",
+        matchResult: bestMatch
+          ? `${matchQuality} (${(confidence * 100).toFixed(1)}%)`
+          : "No match found",
+        matchScore: bestMatch
+          ? `${(confidence * 100).toFixed(1)}%`
+          : "N/A",
+        uploadedImage: `/uploads/${filename}`,
+        matchedImage: matchedImage,
+        personInfo: {
+          name: bestMatch?.name || bestMatchMetadata.Name || "N/A",
+          rrn: bestMatch?.roll_no || bestMatchMetadata.RRN || "N/A",
+          department: bestMatch?.department || bestMatchMetadata.Department || "N/A",
+          year: bestMatch?.year || bestMatchMetadata.Year || "N/A",
+          section: bestMatch?.section || bestMatchMetadata.Section || "N/A"
+        },
+        matches: result.matches || [],
+        totalMatches: result.total_matches || 0,
+        error: null,
+        imageQuality: result.uploaded_image_quality || null,
+        modelInfo: result.model_info || null
+      };
+
+    } catch (e) {
+      console.error("Failed to parse JSON from Python script:", e);
+      match.status = "error";
+      match.error = "Failed to process image";
+    }
+  });
+}
 
 export default router;
-

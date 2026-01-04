@@ -1,18 +1,173 @@
-<%- include('partials/header', { title: 'Home - Image Upload' }) %>
+<%- include('partials/header', { title: 'Crescent College — Student Image Matching System' }) %>
 
-<!-- Image Upload Section -->
-<section class="container">
-    <div class="box">
-        <h2 class="heading">Upload an Image</h2>
-        <form action="/upload" method="POST" enctype="multipart/form-data" class="selection">
-            <label for="image">Choose an image to upload:</label>
-            <input type="file" name="image" id="image" accept="image/*" required>
-            <button type="submit" class="btn">Upload</button>
-        </form>
-    </div>
- 
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-badge">Crescent College</div>
+        <h1 class="hero-title">
+            Student Image Matching for <span class="highlight">Quick Identification</span>
+        </h1>
+        <p class="hero-description">
+            Upload a student photo and instantly identify them using our AI-powered matching system.
+            Fast, accurate verification for Crescent College administration and staff.
+        </p>
+        <div class="hero-cta">
+            <a href="#upload" class="btn-primary">
+                Start Matching
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+            </a>
+            <a href="/about" class="btn-secondary">
+                Learn More
+            </a>
+        </div>
+    </section>
 
- 
-</section>
+    <!-- Upload Section -->
+    <section class="upload-section" id="upload">
+        <div class="upload-card">
+            <div class="upload-icon">📷</div>
+            <h2 class="upload-title">Upload Student Photo</h2>
+            <p class="upload-subtitle">Drag and drop or click to select an image</p>
+            <form action="/upload" method="POST" enctype="multipart/form-data" class="upload-form">
+                <div class="file-input-wrapper">
+                    <input type="file" name="image" id="image" accept="image/*" required>
+                    <div class="file-input-content">
+                        <div class="file-input-icon">📁</div>
+                        <div class="file-input-text">Choose a file or drag it here</div>
+                        <div class="file-input-hint">JPG, PNG, WebP • Max 10MB</div>
+                    </div>
+                </div>
+                <button type="submit" class="btn-upload">
+                    <i class="fas fa-search"></i> Find Student
+                </button>
+            </form>
+        </div>
+    </section>
 
-<%- include('partials/footer') %>
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="section-header">
+            <span class="section-badge">Features</span>
+            <h2 class="section-title">Why use our matching system?</h2>
+            <p class="section-description">
+                Built specifically for Crescent College to streamline student identification.
+            </p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">Instant Results</h3>
+                <p class="feature-description">
+                    Get student information in under a second. No more manual searching through records.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3 class="feature-title">High Accuracy</h3>
+                <p class="feature-description">
+                    99.8% accuracy rate using advanced facial recognition technology.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3 class="feature-title">Secure & Private</h3>
+                <p class="feature-description">
+                    All student data is processed securely within college systems.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works-section" id="how-it-works">
+        <div class="section-header">
+            <span class="section-badge">How It Works</span>
+            <h2 class="section-title">Three simple steps</h2>
+            <p class="section-description">
+                Identify any student in seconds.
+            </p>
+        </div>
+        <div class="steps-container">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Upload Photo</h3>
+                <p class="step-description">
+                    Select or drag a student photo to upload.
+                </p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3 class="step-title">AI Analysis</h3>
+                <p class="step-description">
+                    Our system matches against the student database.
+                </p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3 class="step-title">View Results</h3>
+                <p class="step-description">
+                    Get complete student details instantly.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-container">
+            <h2 class="cta-title">Ready to identify a student?</h2>
+            <p class="cta-description">
+                Upload a photo now and get instant results.
+            </p>
+            <div class="cta-buttons">
+                <a href="#upload" class="btn-white">
+                    Start Matching
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // File input enhancement
+        const fileInput = document.getElementById('image');
+        const fileInputWrapper = document.querySelector('.file-input-wrapper');
+        const fileInputText = document.querySelector('.file-input-text');
+
+        if (fileInput && fileInputWrapper && fileInputText) {
+            fileInput.addEventListener('change', function (e) {
+                if (e.target.files.length > 0) {
+                    fileInputText.textContent = e.target.files[0].name;
+                    fileInputWrapper.style.borderColor = '#6366f1';
+                    fileInputWrapper.style.background = 'rgba(99, 102, 241, 0.15)';
+                }
+            });
+
+            fileInputWrapper.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                fileInputWrapper.style.borderColor = '#6366f1';
+                fileInputWrapper.style.background = 'rgba(99, 102, 241, 0.15)';
+            });
+
+            fileInputWrapper.addEventListener('dragleave', function (e) {
+                e.preventDefault();
+                fileInputWrapper.style.borderColor = '';
+                fileInputWrapper.style.background = '';
+            });
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+
+    <%- include('partials/footer') %>

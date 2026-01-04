@@ -1,22 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+    <meta name="description"
+        content="Crescent College Image Matching System - AI-powered student identification and verification">
+    <meta name="keywords" content="Crescent College, image matching, student identification, facial recognition">
+    <title>
+        <%= title || 'Crescent College — Image Matching' %>
+    </title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <!-- Header -->
-    <header class="Header">
-        <div class="logo">
-            <img src="/images/logo.jpg" alt="Logo">
-        </div>
-        <nav class="navbar">
+    <header class="Header" id="header">
+        <a href="/" class="logo">
+            <img src="/images/logo.jpg" alt="Crescent College">
+            <span class="logo-text">crescent <span class="highlight">college</span></span>
+        </a>
+        <nav class="navbar" id="navbar">
             <a href="/">Home</a>
             <a href="/about">About</a>
-            <a href="/contact">Contact</a>
+            <a href="/contact">Support</a>
+            <a href="/#upload" class="nav-cta">Match Now <i class="fas fa-arrow-right"></i></a>
         </nav>
-        <div id="menu-btn" class="fas fa-bars"></div>
+        <div id="menu-btn" class="fas fa-bars" onclick="toggleMenu()"></div>
     </header>
+
+    <script>
+        function toggleMenu() {
+            const navbar = document.getElementById('navbar');
+            const menuBtn = document.getElementById('menu-btn');
+            navbar.classList.toggle('active');
+            menuBtn.classList.toggle('fa-bars');
+            menuBtn.classList.toggle('fa-times');
+        }
+    </script>
