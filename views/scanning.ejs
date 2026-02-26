@@ -1,7 +1,7 @@
 <%- include('partials/header', { title: 'Scanning — Crescent College' }) %>
 
     <style>
-        /* Scanning Animation Styles */
+        /* Scanning Animation Styles - Black & White Theme */
         .scanning-section {
             min-height: 100vh;
             display: flex;
@@ -9,7 +9,7 @@
             align-items: center;
             justify-content: center;
             padding: 120px 5% 80px;
-            background: var(--bg-dark);
+            background: #000000;
         }
 
         .scanning-container {
@@ -22,10 +22,11 @@
             font-weight: 700;
             margin-bottom: 0.5rem;
             letter-spacing: -0.02em;
+            color: #ffffff;
         }
 
         .scanning-subtitle {
-            color: var(--text-secondary);
+            color: #a3a3a3;
             margin-bottom: 2rem;
         }
 
@@ -36,14 +37,15 @@
             margin: 0 auto 2rem;
             border-radius: 20px;
             overflow: hidden;
-            background: var(--bg-card);
-            border: 2px solid var(--border-color);
+            background: #0a0a0a;
+            border: 2px solid #262626;
         }
 
         .uploaded-preview {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            filter: grayscale(100%);
         }
 
         /* Scanning Line Animation */
@@ -52,14 +54,14 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 4px;
+            height: 3px;
             background: linear-gradient(90deg,
                     transparent,
-                    var(--accent),
-                    var(--accent-light),
-                    var(--accent),
+                    #ffffff,
+                    #ffffff,
+                    #ffffff,
                     transparent);
-            box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3);
             animation: scan 2s ease-in-out infinite;
         }
 
@@ -72,7 +74,7 @@
             }
 
             50% {
-                top: calc(100% - 4px);
+                top: calc(100% - 3px);
                 opacity: 0.8;
             }
         }
@@ -82,35 +84,35 @@
             position: absolute;
             width: 30px;
             height: 30px;
-            border-color: var(--accent);
+            border-color: #ffffff;
             border-style: solid;
         }
 
         .corner-tl {
             top: 10px;
             left: 10px;
-            border-width: 3px 0 0 3px;
+            border-width: 2px 0 0 2px;
             animation: pulse-corner 1.5s ease-in-out infinite;
         }
 
         .corner-tr {
             top: 10px;
             right: 10px;
-            border-width: 3px 3px 0 0;
+            border-width: 2px 2px 0 0;
             animation: pulse-corner 1.5s ease-in-out infinite 0.2s;
         }
 
         .corner-bl {
             bottom: 10px;
             left: 10px;
-            border-width: 0 0 3px 3px;
+            border-width: 0 0 2px 2px;
             animation: pulse-corner 1.5s ease-in-out infinite 0.4s;
         }
 
         .corner-br {
             bottom: 10px;
             right: 10px;
-            border-width: 0 3px 3px 0;
+            border-width: 0 2px 2px 0;
             animation: pulse-corner 1.5s ease-in-out infinite 0.6s;
         }
 
@@ -118,13 +120,13 @@
 
             0%,
             100% {
-                opacity: 0.5;
+                opacity: 0.4;
                 transform: scale(1);
             }
 
             50% {
                 opacity: 1;
-                transform: scale(1.1);
+                transform: scale(1.05);
             }
         }
 
@@ -136,8 +138,8 @@
             width: 100%;
             height: 100%;
             background-image:
-                linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px);
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
             background-size: 20px 20px;
             animation: grid-move 3s linear infinite;
             pointer-events: none;
@@ -161,7 +163,7 @@
             transform: translate(-50%, -50%);
             width: 200px;
             height: 200px;
-            border: 2px solid var(--accent);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 50%;
             opacity: 0;
             animation: glow-expand 2s ease-out infinite;
@@ -179,7 +181,7 @@
             0% {
                 width: 100px;
                 height: 100px;
-                opacity: 0.8;
+                opacity: 0.6;
             }
 
             100% {
@@ -196,16 +198,16 @@
 
         .progress-bar-container {
             width: 100%;
-            height: 6px;
-            background: var(--bg-card);
+            height: 4px;
+            background: #1a1a1a;
             border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            background: #ffffff;
             border-radius: 10px;
             animation: progress 3s ease-in-out infinite;
         }
@@ -243,10 +245,10 @@
             align-items: center;
             gap: 12px;
             padding: 0.75rem 1rem;
-            background: var(--bg-card);
+            background: #0a0a0a;
             border-radius: 10px;
-            border: 1px solid var(--border-color);
-            opacity: 0.5;
+            border: 1px solid #262626;
+            opacity: 0.4;
             transform: translateX(-10px);
             transition: all 0.3s ease;
         }
@@ -254,8 +256,8 @@
         .status-step.active {
             opacity: 1;
             transform: translateX(0);
-            border-color: var(--accent);
-            background: rgba(99, 102, 241, 0.1);
+            border-color: #525252;
+            background: #111111;
         }
 
         .status-step.completed {
@@ -264,19 +266,20 @@
         }
 
         .status-step.completed .step-icon {
-            background: #22c55e;
+            background: #ffffff;
+            color: #000000;
         }
 
         .step-icon {
             width: 28px;
             height: 28px;
-            background: var(--accent);
+            background: #404040;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 0.75rem;
-            color: white;
+            color: #ffffff;
             flex-shrink: 0;
         }
 
@@ -296,11 +299,11 @@
 
         .step-text {
             font-size: 0.9rem;
-            color: var(--text-secondary);
+            color: #737373;
         }
 
         .status-step.active .step-text {
-            color: var(--text-primary);
+            color: #ffffff;
         }
 
         /* Data Points Animation */
@@ -315,9 +318,9 @@
 
         .data-point {
             position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
+            width: 6px;
+            height: 6px;
+            background: #ffffff;
             border-radius: 50%;
             opacity: 0;
             animation: data-pulse 2s ease-in-out infinite;
@@ -380,7 +383,7 @@
             gap: 2rem;
             margin-top: 1.5rem;
             font-size: 0.85rem;
-            color: var(--text-muted);
+            color: #525252;
         }
 
         .info-item {
@@ -390,7 +393,7 @@
         }
 
         .info-item i {
-            color: var(--accent);
+            color: #737373;
         }
     </style>
 
@@ -458,7 +461,7 @@
             <div class="scanning-info">
                 <div class="info-item">
                     <i class="fas fa-shield-alt"></i>
-                    <span>Secure Processing</span>
+                    <span>Secure</span>
                 </div>
                 <div class="info-item">
                     <i class="fas fa-bolt"></i>
@@ -505,10 +508,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.ready) {
-                        // Complete all remaining steps quickly
                         completeAllSteps();
-
-                        // Redirect to results after brief delay
                         setTimeout(() => {
                             window.location.href = `/results/${matchId}`;
                         }, 800);
@@ -535,7 +535,6 @@
         // Start animations and polling
         setTimeout(animateSteps, 500);
 
-        // Start polling after 2 seconds (give ML time to start)
         setTimeout(() => {
             pollInterval = setInterval(checkMatchStatus, 1000);
         }, 2000);

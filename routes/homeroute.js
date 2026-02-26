@@ -1,4 +1,5 @@
 import express from "express";
+import { isAuthenticated } from "../middleware/auth.js";
 import multer from "multer";
 import { exec } from "child_process";
 import path from "path";
@@ -43,7 +44,7 @@ router.get("/", (req, res) => {
 });
 
 // POST route - Upload and show scanning animation
-router.post("/upload", upload.single("image"), (req, res) => {
+router.post("/upload", isAuthenticated, upload.single("image"), (req, res) => {
   if (!req.file) {
     return res.status(400).send("No file uploaded.");
   }
@@ -97,7 +98,7 @@ router.get("/results/:matchId", (req, res) => {
   // Clean up
   pendingMatches.delete(matchId);
 
-  if (match.status === "error") {
+  if (match.status === "error" || match.status === "processing" || !match.result) {
     return res.render("result", {
       title: "Error - Crescent College",
       matchResult: "Error",
@@ -111,7 +112,7 @@ router.get("/results/:matchId", (req, res) => {
         year: "N/A",
         section: "N/A"
       },
-      error: match.error || "Processing failed",
+      error: match.error || (match.status === "processing" ? "Processing timed out or is taking too long. Please try again." : "Processing failed"),
       matches: []
     });
   }

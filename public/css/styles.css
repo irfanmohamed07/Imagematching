@@ -1,36 +1,36 @@
 /* ============================================
    CRESCENT COLLEGE - IMAGE MATCHING SYSTEM
-   Dark Theme with Clean Minimal Design
+   Black & White Minimal Theme
    ============================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-    /* Dark Theme Colors */
+    /* Black & White Color Palette */
     --primary: #ffffff;
     --primary-hover: #e5e5e5;
-    --accent: #6366f1;
-    --accent-light: #818cf8;
-    --accent-bg: rgba(99, 102, 241, 0.15);
+    --accent: #ffffff;
+    --accent-light: #d4d4d4;
+    --accent-bg: rgba(255, 255, 255, 0.08);
 
-    --bg-dark: #0a0a0a;
-    --bg-card: #111111;
-    --bg-elevated: #181818;
-    --bg-hover: #1f1f1f;
+    --bg-dark: #000000;
+    --bg-card: #0a0a0a;
+    --bg-elevated: #111111;
+    --bg-hover: #1a1a1a;
 
     --text-primary: #ffffff;
-    --text-secondary: #a1a1aa;
-    --text-muted: #71717a;
+    --text-secondary: #a3a3a3;
+    --text-muted: #737373;
 
-    --border-color: #27272a;
-    --border-light: #1f1f1f;
+    --border-color: #262626;
+    --border-light: #1a1a1a;
 
-    --success: #22c55e;
-    --error: #ef4444;
+    --success: #ffffff;
+    --error: #ff4444;
 
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.6);
+    --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.7);
 
     --radius-sm: 6px;
     --radius-md: 10px;
@@ -78,7 +78,7 @@ a {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 4%;
-    background: rgba(10, 10, 10, 0.85);
+    background: rgba(0, 0, 0, 0.9);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-light);
@@ -94,6 +94,7 @@ a {
 .Header .logo img {
     height: 36px;
     border-radius: var(--radius-sm);
+    filter: grayscale(100%);
 }
 
 .logo-text {
@@ -104,7 +105,7 @@ a {
 }
 
 .logo-text .highlight {
-    color: var(--accent);
+    color: var(--text-secondary);
 }
 
 .Header .navbar {
@@ -175,32 +176,18 @@ a {
     position: relative;
 }
 
-/* Subtle gradient background */
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 800px;
-    height: 500px;
-    background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
-    pointer-events: none;
-}
-
 .hero-badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     padding: 6px 14px;
     background: var(--accent-bg);
-    color: var(--accent);
+    color: var(--text-primary);
     font-size: 0.8rem;
     font-weight: 600;
     border-radius: var(--radius-full);
     margin-bottom: 1.5rem;
-    border: 1px solid rgba(99, 102, 241, 0.2);
+    border: 1px solid var(--border-color);
     position: relative;
     z-index: 1;
 }
@@ -223,10 +210,7 @@ a {
 }
 
 .hero-title .highlight {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-secondary);
 }
 
 .hero-description {
@@ -267,7 +251,7 @@ a {
 .btn-primary:hover {
     background: var(--primary-hover);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
 }
 
 .btn-primary svg {
@@ -325,7 +309,7 @@ a {
     justify-content: center;
     margin: 0 auto 1.25rem;
     font-size: 1.5rem;
-    border: 1px solid rgba(99, 102, 241, 0.2);
+    border: 1px solid var(--border-color);
 }
 
 .upload-title {
@@ -358,8 +342,8 @@ a {
 }
 
 .file-input-wrapper:hover {
-    border-color: var(--accent);
-    background: var(--accent-bg);
+    border-color: var(--text-muted);
+    background: var(--bg-hover);
 }
 
 .file-input-wrapper input[type="file"] {
@@ -381,7 +365,7 @@ a {
 
 .file-input-icon {
     font-size: 2rem;
-    color: var(--accent);
+    color: var(--text-secondary);
 }
 
 .file-input-text {
@@ -435,12 +419,12 @@ a {
     display: inline-block;
     padding: 6px 14px;
     background: var(--accent-bg);
-    color: var(--accent);
+    color: var(--text-primary);
     font-size: 0.8rem;
     font-weight: 600;
     border-radius: var(--radius-full);
     margin-bottom: 1rem;
-    border: 1px solid rgba(99, 102, 241, 0.2);
+    border: 1px solid var(--border-color);
 }
 
 .section-title {
@@ -473,7 +457,7 @@ a {
 }
 
 .feature-card:hover {
-    border-color: var(--accent);
+    border-color: var(--text-muted);
     transform: translateY(-4px);
 }
 
@@ -487,7 +471,7 @@ a {
     justify-content: center;
     font-size: 1.25rem;
     margin-bottom: 1.25rem;
-    border: 1px solid rgba(99, 102, 241, 0.2);
+    border: 1px solid var(--border-color);
 }
 
 .feature-title {
@@ -580,7 +564,7 @@ a {
 
 .cta-description {
     font-size: 1rem;
-    opacity: 0.75;
+    opacity: 0.7;
     max-width: 400px;
     margin: 0 auto 1.75rem;
 }
@@ -677,13 +661,13 @@ a {
     width: 44px;
     height: 44px;
     background: var(--accent-bg);
-    color: var(--accent);
+    color: var(--text-primary);
     border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1rem;
-    border: 1px solid rgba(99, 102, 241, 0.2);
+    border: 1px solid var(--border-color);
 }
 
 .contact-item strong {
@@ -736,7 +720,7 @@ a {
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: var(--accent);
+    border-color: var(--text-muted);
     box-shadow: 0 0 0 3px var(--accent-bg);
 }
 
@@ -772,74 +756,13 @@ a {
 }
 
 .success-message {
-    background: rgba(34, 197, 94, 0.1);
-    border: 1px solid var(--success);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--text-muted);
     border-radius: var(--radius-md);
     padding: 1rem;
-    color: var(--success);
+    color: var(--text-primary);
     text-align: center;
     font-size: 0.9rem;
-}
-
-/* ============================================
-   ABOUT SECTION
-   ============================================ */
-.about-section {
-    padding: 120px 5% 80px;
-}
-
-.about-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-}
-
-.about-image img {
-    width: 100%;
-    border-radius: var(--radius-xl);
-    border: 1px solid var(--border-color);
-}
-
-.about-content h2 {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: 1.25rem;
-    letter-spacing: -0.02em;
-}
-
-.about-content p {
-    color: var(--text-secondary);
-    margin-bottom: 1.25rem;
-    line-height: 1.7;
-}
-
-.about-features {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin: 1.5rem 0;
-}
-
-.about-feature {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.95rem;
-}
-
-.about-feature-icon {
-    width: 20px;
-    height: 20px;
-    background: var(--success);
-    color: white;
-    border-radius: var(--radius-full);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.65rem;
 }
 
 /* ============================================
@@ -894,7 +817,7 @@ a {
 }
 
 .result-card h2 i {
-    color: var(--accent);
+    color: var(--text-secondary);
     margin-right: 6px;
 }
 
@@ -909,7 +832,7 @@ a {
 }
 
 .result-info h3 i {
-    color: var(--accent);
+    color: var(--text-secondary);
     margin-right: 6px;
 }
 
@@ -932,15 +855,15 @@ a {
 .match-score-display {
     margin-top: 1.25rem;
     padding: 1.25rem;
-    background: var(--accent);
+    background: var(--primary);
     border-radius: var(--radius-lg);
     text-align: center;
-    color: white;
+    color: var(--bg-dark);
 }
 
 .match-score-label {
     font-size: 0.8rem;
-    opacity: 0.8;
+    opacity: 0.7;
     margin-bottom: 0.25rem;
 }
 
@@ -972,7 +895,7 @@ a {
 }
 
 .error-message {
-    background: rgba(239, 68, 68, 0.1);
+    background: rgba(255, 68, 68, 0.1);
     border: 1px solid var(--error);
     color: var(--error);
     padding: 1rem;
@@ -1007,6 +930,7 @@ a {
     max-height: 250px;
     object-fit: contain;
     border-radius: var(--radius-lg);
+    filter: grayscale(100%);
 }
 
 /* ============================================
@@ -1040,6 +964,7 @@ footer {
 .footer-logo img {
     height: 32px;
     border-radius: var(--radius-sm);
+    filter: grayscale(100%);
 }
 
 .footer-logo-text {
@@ -1074,8 +999,8 @@ footer {
 }
 
 .social-link:hover {
-    background: var(--accent);
-    color: white;
+    background: var(--primary);
+    color: var(--bg-dark);
 }
 
 .footer-column h3 {
@@ -1122,21 +1047,6 @@ footer {
     font-size: 0.85rem;
 }
 
-.footer-bottom-links {
-    display: flex;
-    gap: 1.5rem;
-}
-
-.footer-bottom-links a {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    transition: var(--transition);
-}
-
-.footer-bottom-links a:hover {
-    color: var(--text-primary);
-}
-
 /* ============================================
    LEGACY/COMPATIBILITY STYLES
    ============================================ */
@@ -1172,7 +1082,7 @@ footer {
 }
 
 .heading span {
-    color: var(--accent);
+    color: var(--text-secondary);
 }
 
 .selection {
@@ -1198,7 +1108,7 @@ footer {
 }
 
 .selection input[type="file"]:hover {
-    border-color: var(--accent);
+    border-color: var(--text-muted);
 }
 
 .btn {
@@ -1217,71 +1127,6 @@ footer {
 .btn:hover {
     background: var(--primary-hover);
     transform: translateY(-1px);
-}
-
-.contactrow {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 5%;
-}
-
-.contactrow .image {
-    display: flex;
-    align-items: center;
-}
-
-.contactrow .image img {
-    width: 100%;
-    border-radius: var(--radius-xl);
-}
-
-.contactrow form {
-    background: var(--bg-elevated);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-xl);
-    padding: 2rem;
-    height: auto;
-}
-
-.contactrow form h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    text-transform: none;
-}
-
-.contactrow form span {
-    display: block;
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-    margin-bottom: 0.5rem;
-    text-transform: none;
-}
-
-.contactrow form .box1 {
-    width: 100%;
-    padding: 0.875rem 1rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    color: var(--text-primary);
-    font-size: 0.95rem;
-    margin-bottom: 1rem;
-    text-transform: none;
-}
-
-.contactrow form .box1:focus {
-    outline: none;
-    border-color: var(--accent);
-}
-
-.contactrow form textarea {
-    min-height: 120px;
-    resize: vertical;
 }
 
 .flex-container {
@@ -1306,7 +1151,7 @@ footer {
     font-size: 1rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    color: var(--accent);
+    color: var(--text-secondary);
 }
 
 .info-container {
@@ -1320,7 +1165,7 @@ footer {
     font-size: 1rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    color: var(--accent);
+    color: var(--text-secondary);
 }
 
 .info-container p {
@@ -1330,30 +1175,10 @@ footer {
     font-size: 0.9rem;
 }
 
-.info-container h4 {
-    margin-top: 1rem;
-    margin-bottom: 0.75rem;
-    font-size: 0.9rem;
-}
-
-.info-container ul {
-    list-style: none;
-}
-
-.info-container li {
-    padding: 0.5rem 0.75rem;
-    background: var(--bg-elevated);
-    border-radius: var(--radius-sm);
-    margin-bottom: 0.5rem;
-    font-size: 0.85rem;
-}
-
 /* ============================================
    RESPONSIVE STYLES
    ============================================ */
 @media (max-width: 991px) {
-
-    .about-container,
     .contact-container {
         grid-template-columns: 1fr;
         gap: 3rem;
@@ -1361,10 +1186,6 @@ footer {
 
     .result-grid,
     .flex-container {
-        grid-template-columns: 1fr;
-    }
-
-    .contactrow {
         grid-template-columns: 1fr;
     }
 
