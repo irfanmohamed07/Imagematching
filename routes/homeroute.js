@@ -3,14 +3,20 @@ import { isAuthenticated } from "../middleware/auth.js";
 import multer from "multer";
 import { exec } from "child_process";
 import path from "path";
-import { readFileSync } from "fs";
+import { readFileSync, existsSync, mkdirSync } from "fs";
 
 const router = express.Router();
+
+// Ensure uploads directory exists
+const uploadsDir = "uploads";
+if (!existsSync(uploadsDir)) {
+  mkdirSync(uploadsDir, { recursive: true });
+}
 
 // Configure Multer for file upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads");
+    cb(null, uploadsDir);
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
