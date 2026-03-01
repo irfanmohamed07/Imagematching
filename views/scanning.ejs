@@ -539,13 +539,13 @@
             pollInterval = setInterval(checkMatchStatus, 1000);
         }, 2000);
 
-        // Fallback: redirect after 30 seconds max
+        // Fallback: redirect after 3 minutes max (slower laptops need more time)
         setTimeout(() => {
             if (pollInterval) {
                 clearInterval(pollInterval);
                 window.location.href = `/results/${matchId}`;
             }
-        }, 30000);
+        }, 180000); // 3 minutes
     </script>
 
     <%- include('partials/footer') %>

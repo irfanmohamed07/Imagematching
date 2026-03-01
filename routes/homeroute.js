@@ -129,7 +129,15 @@ router.get("/results/:matchId", (req, res) => {
 
 // Background processing function
 function processMatch(matchId, uploadedImagePath, filename) {
-  exec(`venv\\Scripts\\python match.py "${uploadedImagePath}"`, {
+  let pythonCmd = "python"; // Fallback to global python
+
+  if (existsSync(path.join("venv", "Scripts", "python.exe"))) {
+    pythonCmd = path.join("venv", "Scripts", "python"); // Windows venv
+  } else if (existsSync(path.join("venv", "bin", "python"))) {
+    pythonCmd = path.join("venv", "bin", "python"); // Mac/Linux venv
+  }
+
+  exec(`"${pythonCmd}" match.py "${uploadedImagePath}"`, {
     maxBuffer: 1024 * 1024 * 10
   }, (error, stdout, stderr) => {
     if (stderr) {
